@@ -2,8 +2,8 @@ const Workout = require("../models/workout");
 const router = require("express").Router();
 const mongoose = require("mongoose");
 
-router.post("/api/workout", (req, res) => {
-    Workout.create(req.body)
+router.post("/api/workouts", ({ body }, res) => {
+    Workout.create(body)
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
@@ -13,7 +13,7 @@ router.post("/api/workout", (req, res) => {
 });
 
 //DB seeded, gets all workouts
-router.get("/api/workout", (req, res) => {
+router.get("/api/workouts", (req, res) => {
     Workout.find({})
     .then(dbWorkout => {
         res.json(dbWorkout);
@@ -22,7 +22,26 @@ router.get("/api/workout", (req, res) => {
         res.status(400).json(err);
     });
 });
-// router.put(());
-// router.get(());
+
+router.get("/api/workouts/:id", (req, res) => {
+    Workout.findOne(req.params._id)
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.status(400).json(err);
+    });
+})
+
+// router.put("/api/workout", (req, res) => {
+//     Workout.findById(req.params.id)
+//     .then(dbWorkout => {
+//         Workout.findOneAndUpdate(dbWorkout);
+//     })
+//     .catch(err => {
+//         res.status(400).json(err);
+//     })
+// });
+
 
 module.exports = router;
