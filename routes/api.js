@@ -24,7 +24,7 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/:id", (req, res) => {
-    Workout.findOne(req.params._id)
+    Workout.findById({ _id: req.params.id })
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
@@ -33,15 +33,15 @@ router.get("/api/workouts/:id", (req, res) => {
     });
 })
 
-// router.put("/api/workout", (req, res) => {
-//     Workout.findById(req.params.id)
-//     .then(dbWorkout => {
-//         Workout.findOneAndUpdate(dbWorkout);
-//     })
-//     .catch(err => {
-//         res.status(400).json(err);
-//     })
-// });
+router.put("/api/workouts", (req, res) => {
+    Workout.findById({ _id: req.params.id })
+    .then(dbWorkout => {
+        Workout.findOneAndUpdate(dbWorkout);
+    })
+    .catch(err => {
+        res.status(400).json(err);
+    })
+});
 
 
 module.exports = router;
