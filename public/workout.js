@@ -18,7 +18,7 @@ async function initWorkout() {
     renderNoWorkoutText()
   }
 }
-// test
+
 //the below function fails without aggregate; commented out and it properly displays pulled object
 function tallyExercises(exercises) {
   const tallied = exercises.reduce((acc, curr) => {
