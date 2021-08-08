@@ -3,10 +3,11 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 
 //doesn't seem to add all fields
-router.post("/api/workouts", async (req, res) => {
+router.post("/api/workouts", async ({ body }, res) => {
   try {
-    const addWorkout = await Workout.create({ exercises: req.body });
+    const addWorkout = await Workout.create({ exercises: body });
     res.status(200).json(addWorkout);
+    console.log('I POSTed correctly')
   } catch (err) {
     res.status(400).json(err);
   }
@@ -24,9 +25,9 @@ router.get("/api/workouts", async (req, res) => {
 
 router.get("/api/workouts/:id", async (req, res) => {
   try {
-    const oneWorkout = await Workout.findById({ _id: req.params.id });
+    const oneWorkout = await Workout.findById(req.params.id);
 
-    res.json(dbWorkout);
+    res.json(oneWorkout);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -40,6 +41,7 @@ router.put("/api/workouts/:id", async (req, res) => {
       { exercises: req.body },
       { new: true }
     );
+    console.log('I PUT correctly')
     res.json(updateWorkout);
   } catch (err) {
     res.status(400).json(err);
