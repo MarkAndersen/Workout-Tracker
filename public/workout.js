@@ -3,8 +3,8 @@ async function initWorkout() {
   console.log("Last workout:", lastWorkout);
   if (lastWorkout) {
     document
-      .querySelector("a[href='/exercise?']")
-      .setAttribute("href", `/exercise?id=${lastWorkout._id}`);
+      .querySelector("a[href='./exercise?']")
+      .setAttribute("href", `./exercise?id=${lastWorkout._id}`);
 
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
@@ -19,6 +19,7 @@ async function initWorkout() {
   }
 }
 
+//the below function fails without aggregate; commented out and it properly displays pulled object
 function tallyExercises(exercises) {
   const tallied = exercises.reduce((acc, curr) => {
     if (curr.type === "resistance") {
