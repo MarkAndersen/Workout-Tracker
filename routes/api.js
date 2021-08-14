@@ -3,11 +3,11 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 
 //doesn't seem to add all fields
-router.post("/api/workouts", async ({ body }, res) => {
+router.post("/api/workouts", async (req, res) => {
   try {
-    const addWorkout = await Workout.create({ exercises: body });
+    const addWorkout = await Workout.create({});
     res.status(200).json(addWorkout);
-    console.log('I POSTed correctly')
+    console.log(addWorkout, "POSTED");
   } catch (err) {
     res.status(400).json(err);
   }
@@ -26,28 +26,32 @@ router.post("/api/workouts", async ({ body }, res) => {
 //below is an aggregator, will be likely what we use
 
 router.get("/api/workouts", async (req, res) => {
-    try {
-      const getAllWorkouts = await Workout.aggregate([{ 
-          // $group: { day: {$dateToString: { format: "%Y-%M-%D", date: "$date"}}},
-          $addFields: { totalDuration: {$sum: "$exercises.duration"} } } ]);
-      res.status(200).json(getAllWorkouts);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  });
+  try {
+    const getAllWorkouts = await Workout.aggregate([
+      {
+        $addFields: { totalDuration: { $sum: "$exercises.duration" } },
+      },
+    ]);
+    console.log(getAllWorkouts);
+    res.status(200).json(getAllWorkouts);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
 
 router.get("/api/workouts/range", async (req, res) => {
-    try {
-      const getAllWorkouts = await Workout.aggregate([{ 
-          // $group: { day: {$dateToString: { format: "%Y-%M-%D", date: "$date"}}},
-          $addFields: { totalDuration: {$sum: "$exercises.duration"} } } ])
-          //sort
-          //limit to 7;
-      res.status(200).json(getAllWorkouts);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  });
+  try {
+    const getAllWorkouts = await Workout.aggregate([
+      { $addFields: { totalDuration: { $sum: "$exercises.duration" } } },
+      { $limit: 7 },
+      { $sort: -1 },
+    ]);
+
+    res.status(200).json(getAllWorkouts);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
 
 // router.get("/api/workouts/:id", async (req, res) => {
 //   try {
@@ -61,12 +65,13 @@ router.get("/api/workouts/range", async (req, res) => {
 
 router.put("/api/workouts/:id", async (req, res) => {
   try {
-    const updateWorkout = await Workout.findByIdAndUpdate(
-      req.params.id,
-      { exercises: req.body },
+    const updateWorkout = await Workout.findOneAndUpdate(
+      req.params._id,
+      { $push:
+      { exercises: req.body }},
       { new: true }
     );
-    console.log('I PUT correctly')
+    console.log(updateWorkout, "PUT");
     res.json(updateWorkout);
   } catch (err) {
     res.status(400).json(err);
