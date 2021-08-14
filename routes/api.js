@@ -3,9 +3,9 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 
 //doesn't seem to add all fields
-router.post("/api/workouts", async (req, res) => {
+router.post("/api/workouts", async ({ body }, res) => {
   try {
-    const addWorkout = await Workout.create({});
+    const addWorkout = await Workout.create({ body });
     res.status(200).json(addWorkout);
     console.log(addWorkout, "POSTED");
   } catch (err) {
@@ -27,13 +27,13 @@ router.post("/api/workouts", async (req, res) => {
 
 router.get("/api/workouts", async (req, res) => {
   try {
-    const getAllWorkouts = await Workout.aggregate([
+    const getExercises = await Workout.aggregate([
       {
         $addFields: { totalDuration: { $sum: "$exercises.duration" } },
       },
     ]);
-    console.log(getAllWorkouts);
-    res.status(200).json(getAllWorkouts);
+    console.log(getExercises);
+    res.status(200).json(getExercises);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -44,7 +44,7 @@ router.get("/api/workouts/range", async (req, res) => {
     const getAllWorkouts = await Workout.aggregate([
       { $addFields: { totalDuration: { $sum: "$exercises.duration" } } },
       { $limit: 7 },
-      { $sort: -1 },
+      { $sort: { date: -1 } },
     ]);
 
     res.status(200).json(getAllWorkouts);
@@ -66,9 +66,8 @@ router.get("/api/workouts/range", async (req, res) => {
 router.put("/api/workouts/:id", async (req, res) => {
   try {
     const updateWorkout = await Workout.findOneAndUpdate(
-      req.params._id,
-      { $push:
-      { exercises: req.body }},
+      { _id: req.params.id },
+      { $push: { exercises: req.body } },
       { new: true }
     );
     console.log(updateWorkout, "PUT");
