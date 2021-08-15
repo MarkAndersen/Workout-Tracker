@@ -2,7 +2,6 @@ const Workout = require("../models/workout");
 const router = require("express").Router();
 const mongoose = require("mongoose");
 
-//doesn't seem to add all fields
 router.post("/api/workouts", async ({ body }, res) => {
   try {
     const addWorkout = await Workout.create({ body });
@@ -12,18 +11,6 @@ router.post("/api/workouts", async ({ body }, res) => {
     res.status(400).json(err);
   }
 });
-
-//DB seeded, gets all workouts
-// router.get("/api/workouts", async (req, res) => {
-//   try {
-//     const getAllWorkouts = await Workout.find({});
-//     res.status(200).json(getAllWorkouts);
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }
-// });
-
-//below is an aggregator, will be likely what we use
 
 router.get("/api/workouts", async (req, res) => {
   try {
@@ -45,6 +32,7 @@ router.get("/api/workouts/range", async (req, res) => {
       { $addFields: { totalDuration: { $sum: "$exercises.duration" } } },
       { $limit: 7 },
       { $sort: { date: -1 } },
+      
     ]);
 
     res.status(200).json(getAllWorkouts);
@@ -52,16 +40,6 @@ router.get("/api/workouts/range", async (req, res) => {
     res.status(400).json(err);
   }
 });
-
-// router.get("/api/workouts/:id", async (req, res) => {
-//   try {
-//     const oneWorkout = await Workout.findById(req.params.id);
-
-//     res.json(oneWorkout);
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }
-// });
 
 router.put("/api/workouts/:id", async (req, res) => {
   try {
