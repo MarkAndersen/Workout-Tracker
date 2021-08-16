@@ -1,6 +1,6 @@
 const Workout = require("../models/workout");
 const router = require("express").Router();
-const mongoose = require("mongoose");
+
 
 router.post("/api/workouts", async ({ body }, res) => {
   try {
