@@ -9,6 +9,7 @@ const workoutSchema = new Schema ({
     },
     exercises: [
             {
+            //not sure if this is because 'type' is reserved but I had to delineate it as an object in order for this to work correctly.
             type:{
                 type: String
             },

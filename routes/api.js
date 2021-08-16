@@ -29,8 +29,12 @@ router.get("/api/workouts", async (req, res) => {
 router.get("/api/workouts/range", async (req, res) => {
   try {
     const getAllWorkouts = await Workout.aggregate([
-      { $sort: { date: -1 } },
-      // { $limit: 7 },
+      { $sort: { day: -1 } },
+      { $limit: 7 },
+      //This limit is plucking out the first seven workouts and not the last 7.
+      //attemping to fix this by reversing the array and plucking the first 7.... this ends up reversing the graphs...
+      { $sort: { day: 1 } },
+      //so added a second sort command, this time reversing the order to render the graphics in a more traditional manner
       { $addFields: { totalDuration: { $sum: "$exercises.duration" } } },
       
     ]);
