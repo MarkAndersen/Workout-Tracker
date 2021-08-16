@@ -7,18 +7,20 @@ const workoutSchema = new Schema ({
         type: Date,
         default: Date.now
     },
-    exercises:{
+    exercises: [
+            {
             type:{
                 type: String
             },
             name: String,
-            duration: String,
+            duration: Number,
             weight: Number,
             reps: Number,
             sets: Number,
             distance: Number
 
         }
+    ]
     
     
 
@@ -27,6 +29,3 @@ const workoutSchema = new Schema ({
 const Workout = mongoose.model("Workout", workoutSchema);
 
 module.exports = Workout;
-
-
-//I think this is incorrect.
