@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
+//had to fix config vars in heroku to get this to work correctly when deployed
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
