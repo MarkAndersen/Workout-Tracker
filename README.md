@@ -32,7 +32,7 @@ The purpose of this exercise was to add functionality to starter code in order u
 ### Landing Screen Showing Lastest Workout, User Added
 ![User Workout](./images/wt-landing-added.PNG)
 
-### Charts Showing Summaries of Last 7 Workouts, Including the Latest User Added Workout Shown Above
+### Charts Showing Summaries of Last 7 Workouts
 ![Charts](./images/wt-chart.PNG)
 
 ## Challenges & Thoughts:
