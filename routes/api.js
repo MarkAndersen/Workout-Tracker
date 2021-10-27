@@ -6,7 +6,6 @@ router.post("/api/workouts", async ({ body }, res) => {
   try {
     const addWorkout = await Workout.create({ body });
     res.status(200).json(addWorkout);
-    console.log(addWorkout, "POSTED");
   } catch (err) {
     res.status(400).json(err);
   }
@@ -52,7 +51,6 @@ router.put("/api/workouts/:id", async (req, res) => {
       { $push: { exercises: req.body } },
       { new: true }
     );
-    console.log(updateWorkout, "PUT");
     res.json(updateWorkout);
   } catch (err) {
     res.status(400).json(err);
